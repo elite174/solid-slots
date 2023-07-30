@@ -2,20 +2,63 @@
   "name": "solid-slots",
   "version": "1.0.0",
   "description": "Simple slots for solid-js",
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "dist/index/index.module.js",
+  "module": "dist/index/index.module.js",
+  "types": "dist/index/index.d.ts",
+  "exports": {
+    ".": {
+      "solid": "./dist/index/index.js",
+      "import": "./dist/index/index.module.js",
+      "browser": "./dist/index/index.module.js",
+      "node": "./dist/index/index.common.js",
+      "require": "./dist/index/index.common.js"
+    }
+  },
+  "keywords": [
+    "solid",
+    "solidjs",
+    "slot",
+    "slots"
+  ],
+  "sideEffects": false,
+  "author": "Vladislav Lipatov",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elite174/solid-slots"
+  },
   "scripts": {
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "rollup -c rollup.config.js",
     "serve": "vite preview"
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-typescript": "^7.22.5",
+    "babel-preset-solid": "^1.7.7",
+    "rollup": "^3.27.0",
+    "rollup-preset-solid": "^2.0.1",
     "solid-devtools": "^0.27.3",
     "typescript": "^5.1.3",
     "vite": "^4.3.9",
     "vite-plugin-solid": "^2.7.0"
   },
-  "dependencies": {
-    "solid-js": "^1.7.6"
-  }
+  "peerDependencies": {
+    "solid-js": "^1.7"
+  },
+  "homepage": "https://github.com/elite174/solid-slots",
+  "bugs": {
+    "url": "https://github.com/elite174/solid-slots/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "private": false
 }
