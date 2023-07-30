@@ -3,7 +3,7 @@
 [![version](https://img.shields.io/npm/v/solid-slots?style=for-the-badge)](https://www.npmjs.com/package/solid-slots)
 ![npm](https://img.shields.io/npm/dw/solid-slots?style=for-the-badge)
 
-Bring slots to solid-js!
+Bring slots to solid-js! Inspired by Svelte slots.
 
 ## Example
 
