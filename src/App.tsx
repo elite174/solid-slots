@@ -1,5 +1,5 @@
 import { Show, VoidComponent, createSignal } from "solid-js";
-import { Slot, Slottable, withSlots } from "./lib";
+import { Slot, Slotable, withSlots } from "./lib";
 
 interface Props {
   textColor: string;
@@ -55,7 +55,7 @@ const App = () => {
          * If you need to pass a component or some primitive to some slot
          * you may use <Slottable> component
          */}
-        <Slottable slot="footer">Footer</Slottable>
+        <Slotable slot="footer">Footer</Slotable>
       </SlottedLayout>
     </main>
   );

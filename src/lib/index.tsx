@@ -9,26 +9,39 @@ import {
   type VoidComponent,
 } from "solid-js";
 import { type ResolvedJSXElement } from "solid-js/types/reactive/signal";
+import { Dynamic } from "solid-js/web";
 
 interface SlotProps {
   name?: string;
 }
 
-interface SlottableProps {
+interface SlotableProps {
+  /**
+   * HTML tagname for the wrapper
+   * @default div
+   */
+  tag?: string;
+  /** Slot name */
   slot?: string;
 }
 
 export type WithSlotsOptions = {
-  /** */
-  replaceSlotContent?: boolean;
+  /**
+   * Suitable for cases when there are several children with the same slot name.
+   * If set to false it will render only last resolved child with the same slot name.
+   * If set to true (default) it will render all children with the same slot name.
+   * @default true
+   */
+  mergeChildren?: boolean;
 };
 
 const DEFAULT_OPTIONS: WithSlotsOptions = {
-  replaceSlotContent: false,
+  mergeChildren: true,
 };
 
 const SLOT_ATTRIBUTE_NAME = "data-s-slot";
 const DEFAULT_SLOT_NAME = "$DEFAULT_SLOT";
+const DEFAULT_SLOTABLE_TAG = "div";
 
 const SlotContext = createContext<{
   lookupTable: Accessor<Record<string, ResolvedJSXElement[]>>;
@@ -52,16 +65,15 @@ export const Slot: ParentComponent<SlotProps> = (props) => {
   );
 };
 
-export const Slottable: ParentComponent<SlottableProps> = (props) => {
-  return (
-    <div
-      data-s-slot={props.slot ?? DEFAULT_SLOT_NAME}
-      style={{ display: "contents" }}
-    >
-      {props.children}
-    </div>
-  );
-};
+export const Slotable: ParentComponent<SlotableProps> = (props) => (
+  <Dynamic
+    component={props.tag ?? DEFAULT_SLOTABLE_TAG}
+    data-s-slot={props.slot ?? DEFAULT_SLOT_NAME}
+    style={{ display: "contents" }}
+  >
+    {props.children}
+  </Dynamic>
+);
 
 export const withSlots =
   <T extends {}>(
@@ -87,9 +99,9 @@ export const withSlots =
             slotName = DEFAULT_SLOT_NAME;
 
           if (table[slotName])
-            resolvedOptions.replaceSlotContent
-              ? [child]
-              : table[slotName].push(child);
+            resolvedOptions.mergeChildren
+              ? table[slotName].push(child)
+              : [child];
           else table[slotName] = [child];
         });
 
