@@ -1,34 +1,70 @@
-## Usage
+# solid-slots
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+Bring slots to solid-js!
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Example
 
-```bash
-$ npm install # or pnpm install or yarn install
+```tsx
+import { Show, VoidComponent, createSignal } from "solid-js";
+import { Slot, Slottable, withSlots } from "solid-slots";
+
+interface Props {
+  textColor: string;
+}
+
+/**
+ * Step 1:
+ * Wrap your component with `withSlots`.
+ * It will allow the component to properly work with Slot components.
+ *
+ * Important: Your component should be VoidComponent (so you either work with props.children or with Slot components)
+ */
+const Layout: VoidComponent<Props> = (props) => (
+  <div style={{ color: props.textColor }}>
+    <Slot name="header" />
+    {/** The name prop for slots is optional! */}
+    <Slot>
+      <div>This is a fallback to content</div>
+    </Slot>
+    <Slot name="footer" />
+    {/** This is not allowed */}
+    {/** props.children */}
+  </div>
+);
+
+const SlottedLayout = withSlots(Layout);
+
+const App = () => {
+  const [isHeaderVisible, setIsHeaderVisible] = createSignal(false);
+
+  return (
+    <main>
+      <button onClick={() => setIsHeaderVisible((v) => !v)}>
+        Toggle header content
+      </button>
+      {/**
+       * Step 2:
+       * Pass some children to your slottable component.
+       */}
+      <SlottedLayout textColor="red">
+        {/** You can also show dynamic content! */}
+        <Show when={isHeaderVisible()}>
+          {/**
+           * If you work with DOM nodes directly
+           * you may add data-s-slot attribute to the dom node.
+           */}
+          <div data-s-slot="header">
+            <span>Nice header</span>
+          </div>
+        </Show>
+        <section>This section goes directly to default slot</section>
+        {/**
+         * If you need to pass a component or some primitive to some slot
+         * you may use <Slottable> component
+         */}
+        <Slottable slot="footer">Footer</Slottable>
+      </SlottedLayout>
+    </main>
+  );
+};
 ```
-
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run dev` or `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
