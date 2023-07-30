@@ -1,10 +1,6 @@
 import { Show, VoidComponent, createSignal } from "solid-js";
 import { Slot, Slotable, withSlots } from "./lib";
 
-interface Props {
-  textColor: string;
-}
-
 /**
  * Step 1:
  * Wrap your component with `withSlots`.
@@ -12,6 +8,10 @@ interface Props {
  *
  * Important: Your component should be VoidComponent (so you either work with props.children or with Slot components)
  */
+interface Props {
+  textColor: string;
+}
+
 const Layout: VoidComponent<Props> = (props) => (
   <div style={{ color: props.textColor }}>
     <Slot name="header" />
