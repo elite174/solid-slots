@@ -20,8 +20,7 @@ const Layout: VoidComponent<Props> = (props) => (
       <div>This is a fallback to content</div>
     </Slot>
     <Slot name="footer" />
-    {/** This is not allowed */}
-    {/** props.children */}
+    {/** It's not allowed to render props.children inside components wrapped with `withSlots` */}
   </div>
 );
 

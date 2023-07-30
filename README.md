@@ -6,7 +6,7 @@ Bring slots to solid-js!
 
 ```tsx
 import { Show, VoidComponent, createSignal } from "solid-js";
-import { Slot, Slottable, withSlots } from "solid-slots";
+import { Slot, Slotable, withSlots } from "solid-slots";
 
 interface Props {
   textColor: string;
@@ -27,8 +27,7 @@ const Layout: VoidComponent<Props> = (props) => (
       <div>This is a fallback to content</div>
     </Slot>
     <Slot name="footer" />
-    {/** This is not allowed */}
-    {/** props.children */}
+    {/** It's not allowed to render props.children inside components wrapped with `withSlots` */}
   </div>
 );
 
@@ -62,9 +61,74 @@ const App = () => {
          * If you need to pass a component or some primitive to some slot
          * you may use <Slottable> component
          */}
-        <Slottable slot="footer">Footer</Slottable>
+        <Slotable slot="footer">Footer</Slotable>
       </SlottedLayout>
     </main>
   );
 };
+```
+
+## Docs
+
+### `withSlots`
+
+Wraps a `VoidComponent` to allow working with `Slot` components.
+
+#### Definition
+
+```tsx
+import { type VoidComponent } from "solid-js";
+
+type WithSlotsOptions = {
+  /**
+   * Suitable for cases when there are several children with the same slot name.
+   * If set to false it will render only last resolved child with the same slot name.
+   * If set to true (default) it will render all children with the same slot name.
+   * @default true
+   */
+  mergeChildren?: boolean;
+};
+
+export declare const withSlots: <T extends {}>(
+  Component: VoidComponent<T>,
+  options?: WithSlotsOptions
+) => ParentComponent<T>;
+```
+
+### `Slot`
+
+A component which renders the content
+
+#### Definition
+
+```tsx
+import { type ParentComponent } from "solid-js";
+
+interface SlotProps {
+  name?: string;
+}
+
+export declare const Slot: ParentComponent<SlotProps>;
+```
+
+### `Slotable`
+
+A component which helps to render primitives or another components to slots. It will wrap the content into a HTML element (by default it's a `div`) with `display: contents`.
+
+#### Definition
+
+```tsx
+import { type ParentComponent } from "solid-js";
+
+interface SlotableProps {
+  /**
+   * HTML tagname for the wrapper
+   * @default div
+   */
+  tag?: string;
+  /** Slot name */
+  slot?: string;
+}
+
+export declare const Slotable: ParentComponent<SlotableProps>;
 ```
