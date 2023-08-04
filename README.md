@@ -5,6 +5,27 @@
 
 Bring slots to solid-js! Inspired by Svelte slots.
 
+This package is mostly about syntactic sugar. While it adds a tiny runtime overhead in comparison to passing props, I would recommend to pass props to components directly:
+
+```
+cosnt ParentComponent = (props) => (
+  <div>
+    {props.Header}
+    {props.Content}
+    {props.Footer}
+  </div>
+)
+
+const Example = () => (
+  <ParentComponent
+    Header={<header>Some header</header>}
+    Content={<main>Some content</main>}
+    Footer={<footer>Some footer</footer>} />
+)
+```
+
+However if you like the syntax, just use the package :)
+
 ## Example
 
 ```tsx
