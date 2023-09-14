@@ -1,6 +1,6 @@
 {
   "name": "solid-slots",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple slots for solid-js",
   "files": [
     "dist"
@@ -15,7 +15,8 @@
       "import": "./dist/index/index.module.js",
       "browser": "./dist/index/index.module.js",
       "node": "./dist/index/index.common.js",
-      "require": "./dist/index/index.common.js"
+      "require": "./dist/index/index.common.js",
+      "types": "./dist/index/index.d.ts"
     }
   },
   "keywords": [
